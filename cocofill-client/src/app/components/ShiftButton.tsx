@@ -5,15 +5,22 @@ import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import CircleIcon from "@mui/icons-material/Circle";
 
-interface FadeMenuProps {
-  id: string; // ボタンごとの一意のIDを設定する
+interface ShiftButtonProps {
+  id: string; // 各ボタンの一意なID
+  weekKey: number; // 週の識別キー
 }
 
-export default function FadeMenu({ id }: FadeMenuProps) {
+export default function ShiftButton({ id, weekKey }: ShiftButtonProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [selectedValue, setSelectedValue] = React.useState(
-    () => localStorage.getItem(`selectedValue-${id}`) || "＋" // 各ボタンに固有のキーを使用？？
+    () => localStorage.getItem(`selectedValue-${id}`) || "＋"
   );
+
+  React.useEffect(() => {
+    // 週が変わったら localStorage から値を再取得
+    const storedValue = localStorage.getItem(`selectedValue-${id}`);
+    setSelectedValue(storedValue || "＋");
+  }, [weekKey, id]);
 
   const open = Boolean(anchorEl);
 
@@ -27,11 +34,10 @@ export default function FadeMenu({ id }: FadeMenuProps) {
 
   const handleMenuItemClick = (value: string) => {
     setSelectedValue(value); // 選択された値を状態に設定
-    localStorage.setItem(`selectedValue-${id}`, value); // 各ボタンに固有のキーでローカルストレージに保存
+    localStorage.setItem(`selectedValue-${id}`, value);
     handleClose(); // メニューを閉じる
   };
 
-  // ボタンの背景色を選択値に応じて設定
   const getButtonColor = () => {
     switch (selectedValue) {
       case "朝":
