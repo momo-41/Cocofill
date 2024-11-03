@@ -17,6 +17,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { calcWeek } from "../../const/test/utils";
 import { Dayjs } from "dayjs";
+import ShiftButton from "../ShiftButton";
 
 // 型指定
 interface Column {
@@ -75,7 +76,7 @@ const rows: RowData[] = [
   },
   {
     name: "今井",
-    shifts: ["朝", "朝", "朝", "朝", "朝", "朝", "朝"],
+    shifts: ["朝", "朝", "朝", "朝", "朝", "休", "休"],
   },
   {
     name: "佐々木",
@@ -135,7 +136,7 @@ export default function TestTableMUI() {
         </IconButton>
       </Stack>
       <Paper sx={{ width: "100%" }}>
-        <TableContainer sx={{ maxHeight: 700 }}>
+        <TableContainer sx={{ maxHeight: 650 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -216,9 +217,9 @@ export default function TestTableMUI() {
                         align="center"
                         sx={{ borderRight: "1px solid #ddd" }}
                       >
-                        <Button variant="outlined" size="small">
-                          ＋
-                        </Button>
+                        <ShiftButton
+                          id={`${row.name}-${week[idx].format("YYYY-MM-DD")}`}
+                        />
                       </TableCell>
                     ))}
                   </TableRow>
