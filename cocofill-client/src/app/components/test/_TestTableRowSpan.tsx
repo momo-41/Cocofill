@@ -61,39 +61,18 @@ const getShiftBadgeColor = (shift: string) => {
 
 // 各従業員のデータを二分割にした形で定義
 const rows = [
-  {
-    name: "立花",
-    shifts: [
-      ["朝", "", "朝", "朝", "", "どちらか休み", ""],
-      ["+", "朝", "", "", "朝", "", "+"],
-    ],
-  },
+  { name: "立花", shifts: ["朝", "", "朝", "朝", "", "どちらか休み", ""] },
   {
     name: "齋藤",
-    shifts: [
-      ["中or遅", "", "中or遅", "中or遅", "中or遅", "休 希望", "中or遅"],
-      ["遅", "中", "", "遅", "+", "休", "+"],
-    ],
+    shifts: ["中or遅", "", "中or遅", "中or遅", "中or遅", "休 希望", "中or遅"],
   },
-  {
-    name: "金子",
-    shifts: [
-      ["可", "", "休", "", "可", "可", ""],
-      ["朝", "可", "休", "可", "休", "遅", "朝"],
-    ],
-  },
-  {
-    name: "和田",
-    shifts: [
-      ["遅", "遅", "中", "遅", "休", "休", ""],
-      ["中", "遅", "休", "休", "遅", "休", "休"],
-    ],
-  },
+  { name: "金子", shifts: ["可", "", "休", "", "可", "可", ""] },
+  { name: "和田", shifts: ["遅", "遅", "中", "遅", "休", "休", ""] },
 ];
 
-export default function TestTableRowSpan() {
+export default function CustomShiftTable() {
   return (
-    <Paper sx={{ width: "100%", mb: 10 }}>
+    <Paper sx={{ width: "100%" }}>
       <TableContainer sx={{ maxHeight: 700 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -120,38 +99,28 @@ export default function TestTableRowSpan() {
           <TableBody>
             {rows.map((row) => (
               <>
-                {/* 上段 */}
+                {/* 上段：シフトの文字だけ表示 */}
                 <TableRow key={`${row.name}-1`}>
                   <TableCell
                     component="th"
                     scope="row"
                     align="center"
-                    rowSpan={2} //ここ
+                    rowSpan={2}
                     sx={{ borderRight: "1px solid #ddd" }}
                   >
                     {row.name}
                   </TableCell>
-                  {row.shifts[0].map((shift, idx) => (
+                  {row.shifts.map((shift, idx) => (
                     <TableCell
-                      key={`${row.name}-1-${idx}`}
+                      key={`${row.name}-shift-${idx}`}
                       align="center"
                       sx={{ borderRight: "1px solid #ddd" }}
                     >
                       {shift ? (
-                        shift === "+" ? (
-                          <Button variant="outlined" size="small">
-                            ＋
-                          </Button>
-                        ) : (
-                          <ShiftBadge sx={getShiftBadgeColor(shift)}>
-                            {shift}
-                          </ShiftBadge>
-                        )
-                      ) : (
-                        <Button variant="outlined" size="small">
-                          ＋
-                        </Button>
-                      )}
+                        <ShiftBadge sx={getShiftBadgeColor(shift)}>
+                          {shift}
+                        </ShiftBadge>
+                      ) : null}
                     </TableCell>
                   ))}
                   <TableCell
@@ -161,25 +130,15 @@ export default function TestTableRowSpan() {
                     {/* 合計セル（上段） */}
                   </TableCell>
                 </TableRow>
-                {/* 下段 */}
+                {/* 下段：「+」ボタンのみ表示 */}
                 <TableRow key={`${row.name}-2`}>
-                  {row.shifts[1].map((shift, idx) => (
+                  {row.shifts.map((shift, idx) => (
                     <TableCell
-                      key={`${row.name}-2-${idx}`}
+                      key={`${row.name}-button-${idx}`}
                       align="center"
                       sx={{ borderRight: "1px solid #ddd" }}
                     >
-                      {shift ? (
-                        shift === "+" ? (
-                          <Button variant="outlined" size="small">
-                            ＋
-                          </Button>
-                        ) : (
-                          <ShiftBadge sx={getShiftBadgeColor(shift)}>
-                            {shift}
-                          </ShiftBadge>
-                        )
-                      ) : (
+                      {!shift && (
                         <Button variant="outlined" size="small">
                           ＋
                         </Button>
