@@ -1,4 +1,6 @@
 "use client";
+import * as React from "react";
+import { useState } from "react";
 import {
   Paper,
   TableContainer,
@@ -8,31 +10,29 @@ import {
   TableCell,
   TableBody,
   Button,
+  IconButton,
+  Stack,
 } from "@mui/material";
-import * as React from "react";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { calcWeek, hour } from "../../const/test/utils";
+import { Dayjs } from "dayjs";
 
-//型指定
+// 型指定
 interface Column {
-  id: "name" | "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun" | "sum";
+  id: string;
   label: string;
-  minWidth?: number;
   date: string;
   align: "center";
+  minWidth: number;
 }
 
-const columns: Column[] = [
-  { id: "name", label: "", date: "", minWidth: 40, align: "center" },
-  { id: "mon", label: "月", date: "14日", minWidth: 80, align: "center" },
-  { id: "tue", label: "火", date: "15日", minWidth: 80, align: "center" },
-  { id: "wed", label: "水", date: "16日", minWidth: 80, align: "center" },
-  { id: "thu", label: "木", date: "17日", minWidth: 80, align: "center" },
-  { id: "fri", label: "金", date: "18日", minWidth: 80, align: "center" },
-  { id: "sat", label: "土", date: "19日", minWidth: 80, align: "center" },
-  { id: "sun", label: "日", date: "20日", minWidth: 80, align: "center" },
-  { id: "sum", label: "", date: "合計", minWidth: 50, align: "center" },
-];
+interface RowData {
+  name: string;
+  shifts: string[];
+}
 
-const rows = [
+const rows: RowData[] = [
   {
     name: "立花",
     shifts: ["可", "可", "可", "可", "可", "可", "可"],
@@ -92,99 +92,142 @@ const rows = [
 ];
 
 export default function TestTableMUI() {
+  const [week, setWeek] = useState<Dayjs[]>(calcWeek()); //calcWeekは現在の週のデータを返している
+
+  // カラムを動的に生成
+  const columns: Column[] = [
+    { id: "name", label: "", date: "", align: "center" as const, minWidth: 40 },
+    ...week.map((day, index) => ({
+      id: `day-${index}`,
+      label: day.format("dd"), // 曜日表示
+      date: day.format("D日"), // 日付表示
+      align: "center" as const,
+      minWidth: 100,
+    })),
+    {
+      id: "sum",
+      label: "",
+      date: "合計",
+      align: "center" as const,
+      minWidth: 70,
+    },
+  ];
+
+  const moveWeek = (type: string) => {
+    //typeはaddかbackの二択
+    const startDay =
+      type === "add" //addが押されたら1週間進めて、それ以外(backのとき)は1週間戻す
+        ? week[0].add(7, "day").format("YYYY-MM-DD")
+        : week[0].subtract(7, "day").format("YYYY-MM-DD");
+    setWeek(calcWeek(startDay)); //weekにstartDayの状態(日付)をセット(更新)
+  };
+
   return (
-    <Paper sx={{ width: "100%" }}>
-      <TableContainer sx={{ maxHeight: 700 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {/* 曜日 */}
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{
-                    paddingTop: 3, //このpaddingはセルの高さを短くさせるためのもの
-                    paddingBottom: 3,
-                    borderRight: "1px solid #ddd",
-                    backgroundColor: "#F0F0F0",
-                  }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-            <TableRow>
-              {/* 日付 */}
-              {columns.map((column, index) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{
-                    top: 31, //tableから31pxの位置に固定
-                    minWidth: column.minWidth,
-                    paddingTop: 3, //このpaddingはセルの高さを短くさせるためのもの
-                    paddingBottom: 3,
-                    borderRight:
-                      index < columns.length ? "1px solid #ddd" : "none",
-                    backgroundColor: "#F0F0F0",
-                  }}
-                >
-                  {column.date}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <>
-                {/* 上段：シフト希望の表示 */}
-                <TableRow key={`${row.name}-1`}>
+    <>
+      <Stack direction="row" padding={1}>
+        <Button onClick={() => setWeek(calcWeek())}>今日</Button>
+        {/* ボタンが押されたらcalcWeek(現在の週のデータ返す)をweekにセット */}
+        <IconButton onClick={() => moveWeek("back")}>
+          <ArrowBackIosNewIcon sx={{ width: 20 }} />
+        </IconButton>
+        <IconButton sx={{ ml: 1 }} onClick={() => moveWeek("add")}>
+          <ArrowForwardIosIcon sx={{ width: 20 }} />
+        </IconButton>
+      </Stack>
+      <Paper sx={{ width: "100%" }}>
+        <TableContainer sx={{ maxHeight: 700 }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                {/* 曜日 */}
+                {columns.map((column) => (
                   <TableCell
-                    component="th"
-                    scope="row"
-                    align="center"
-                    rowSpan={2} //名前のセルは上下のセルを統合
-                    sx={{ borderRight: "1px solid #ddd" }}
+                    key={column.id}
+                    align={column.align}
+                    style={{
+                      minWidth: column.minWidth,
+                      paddingTop: 3, //このpaddingはセルの高さを短くさせるためのもの
+                      paddingBottom: 3,
+                      borderRight: "1px solid #ddd",
+                      backgroundColor: "#F0F0F0",
+                    }}
                   >
-                    {row.name}
+                    {column.label}
                   </TableCell>
-                  {row.shifts.map((shift, idx) => (
+                ))}
+              </TableRow>
+              <TableRow>
+                {/* 日付 */}
+                {columns.map((column, index) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{
+                      top: 31, //tableから31pxの位置に固定
+                      minWidth: column.minWidth,
+                      paddingTop: 3, //このpaddingはセルの高さを短くさせるためのもの
+                      paddingBottom: 3,
+                      borderRight:
+                        index < columns.length ? "1px solid #ddd" : "none",
+                      backgroundColor: "#F0F0F0",
+                    }}
+                  >
+                    {column.date}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <>
+                  {/* 上段：シフト希望の表示 */}
+                  <TableRow key={`${row.name}-1`}>
                     <TableCell
-                      key={`${row.name}-shift-${idx}`}
+                      component="th"
+                      scope="row"
                       align="center"
+                      rowSpan={2} //名前のセルは上下のセルを統合
                       sx={{ borderRight: "1px solid #ddd" }}
                     >
-                      {shift}
+                      {row.name}
                     </TableCell>
-                  ))}
-                  <TableCell
-                    align="center"
-                    rowSpan={2} // 合計セルも上下のセルを統合
-                    sx={{ borderRight: "1px solid #ddd" }}
-                  >
-                    {/* 合計セル（上段と下段を統合） */}
-                  </TableCell>
-                </TableRow>
-                {/* 下段：「+」ボタン表示 */}
-                <TableRow key={`${row.name}-2`}>
-                  {columns.slice(1, -1).map((_, idx) => (
+                    {row.shifts.map((shift, idx) => (
+                      <TableCell
+                        key={`${row.name}-shift-${idx}`}
+                        align="center"
+                        sx={{ borderRight: "1px solid #ddd" }}
+                      >
+                        {shift}
+                      </TableCell>
+                    ))}
                     <TableCell
-                      key={`${row.name}-button-${idx}`}
                       align="center"
+                      rowSpan={2} // 合計セルも上下のセルを統合
                       sx={{ borderRight: "1px solid #ddd" }}
                     >
-                      <Button variant="outlined" size="small">
-                        ＋
-                      </Button>
+                      {/* 合計セル（上段と下段を統合） */}
                     </TableCell>
-                  ))}
-                </TableRow>
-              </>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Paper>
+                  </TableRow>
+                  {/* 下段：「+」ボタン表示 */}
+                  <TableRow key={`${row.name}-2`}>
+                    {columns.slice(1, -1).map((_, idx) => (
+                      <TableCell
+                        key={`${row.name}-button-${idx}`}
+                        align="center"
+                        sx={{ borderRight: "1px solid #ddd" }}
+                      >
+                        <Button variant="outlined" size="small">
+                          ＋
+                        </Button>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+    </>
   );
 }
