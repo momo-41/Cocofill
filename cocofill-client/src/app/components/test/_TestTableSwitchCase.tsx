@@ -8,7 +8,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
 
 // 型指定
 interface Column {
@@ -30,12 +31,37 @@ const columns: Column[] = [
   { id: "sum", label: "合計", minWidth: 50, align: "center" },
 ];
 
+// シフトバッジ用のスタイル
+const ShiftBadge = styled(Box)(({ theme }) => ({
+  padding: "4px 8px",
+  borderRadius: "12px",
+  fontSize: "0.8rem",
+  color: "#fff",
+  display: "inline-block",
+  textAlign: "center",
+}));
+
+// シフト内容に応じた背景色を設定
+const getShiftBadgeColor = (shift: string) => {
+  switch (shift) {
+    case "朝":
+      return { backgroundColor: "#f8c0c8" };
+    case "中":
+      return { backgroundColor: "#f8d878" };
+    case "遅":
+      return { backgroundColor: "#d1b3f9" };
+    case "休":
+      return { backgroundColor: "#b0b0b0" };
+    case "可":
+      return { backgroundColor: "#e0e0e0", color: "#000" };
+    default:
+      return { backgroundColor: "#e0e0e0", color: "#000" };
+  }
+};
+
 // 各従業員のデータを二分割にした形で定義
 const rows = [
-  {
-    name: "立花",
-    shifts: ["朝", "朝", "朝", "朝", "朝", "どちらか休み", "どちらか休み"],
-  },
+  { name: "立花", shifts: ["朝", "", "朝", "朝", "", "どちらか休み", ""] },
   {
     name: "齋藤",
     shifts: ["中or遅", "", "中or遅", "中or遅", "中or遅", "休 希望", "中or遅"],
@@ -44,7 +70,7 @@ const rows = [
   { name: "和田", shifts: ["遅", "遅", "中", "遅", "休", "休", ""] },
 ];
 
-export default function CustomShiftTable() {
+export default function TestTableSwitchCase() {
   return (
     <Paper sx={{ width: "100%" }}>
       <TableContainer sx={{ maxHeight: 700 }}>
@@ -90,7 +116,11 @@ export default function CustomShiftTable() {
                       align="center"
                       sx={{ borderRight: "1px solid #ddd" }}
                     >
-                      <Typography variant="body2">{shift}</Typography>
+                      {shift ? (
+                        <ShiftBadge sx={getShiftBadgeColor(shift)}>
+                          {shift}
+                        </ShiftBadge>
+                      ) : null}
                     </TableCell>
                   ))}
                   <TableCell
@@ -100,17 +130,19 @@ export default function CustomShiftTable() {
                     {/* 合計セル（上段） */}
                   </TableCell>
                 </TableRow>
-                {/* 下段：すべてのセルに「+」ボタンを表示 */}
+                {/* 下段：「+」ボタンのみ表示 */}
                 <TableRow key={`${row.name}-2`}>
-                  {columns.slice(1).map((_, idx) => (
+                  {row.shifts.map((shift, idx) => (
                     <TableCell
                       key={`${row.name}-button-${idx}`}
                       align="center"
                       sx={{ borderRight: "1px solid #ddd" }}
                     >
-                      <Button variant="outlined" size="small">
-                        ＋
-                      </Button>
+                      {!shift && (
+                        <Button variant="outlined" size="small">
+                          ＋
+                        </Button>
+                      )}
                     </TableCell>
                   ))}
                   <TableCell
