@@ -15,8 +15,9 @@ import {
 } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { calcWeek, hour } from "../../const/test/utils";
+import { calcWeek } from "../../const/test/utils";
 import { Dayjs } from "dayjs";
+import ShiftButton from "../ShiftButton";
 
 // 型指定
 interface Column {
@@ -75,7 +76,7 @@ const rows: RowData[] = [
   },
   {
     name: "今井",
-    shifts: ["朝", "朝", "朝", "朝", "朝", "朝", "朝"],
+    shifts: ["朝", "朝", "朝", "朝", "朝", "休", "休"],
   },
   {
     name: "佐々木",
@@ -94,9 +95,11 @@ const rows: RowData[] = [
 export default function TestTableMUI() {
   const [week, setWeek] = useState<Dayjs[]>(calcWeek()); //calcWeekは現在の週のデータを返している
 
+  const [weekKey, setWeekKey] = useState(0); // 週が変わる度にbuttonの表示をリセットするために追加
+
   // カラムを動的に生成
   const columns: Column[] = [
-    { id: "name", label: "", date: "", align: "center" as const, minWidth: 40 },
+    { id: "name", label: "", date: "", align: "center" as const, minWidth: 40 }, // as constにしないとエラーが出る
     ...week.map((day, index) => ({
       id: `day-${index}`,
       label: day.format("dd"), // 曜日表示
@@ -120,12 +123,20 @@ export default function TestTableMUI() {
         ? week[0].add(7, "day").format("YYYY-MM-DD")
         : week[0].subtract(7, "day").format("YYYY-MM-DD");
     setWeek(calcWeek(startDay)); //weekにstartDayの状態(日付)をセット(更新)
+    setWeekKey((prevKey) => prevKey + 1); // 週が変更されるたびに weekKey を更新
   };
 
   return (
     <>
       <Stack direction="row" padding={1}>
-        <Button onClick={() => setWeek(calcWeek())}>今日</Button>
+        <Button
+          onClick={() => {
+            setWeek(calcWeek());
+            setWeekKey((prevKey) => prevKey + 1); // 週をリセットする時も weekKey を更新
+          }}
+        >
+          今日
+        </Button>
         {/* ボタンが押されたらcalcWeek(現在の週のデータ返す)をweekにセット */}
         <IconButton onClick={() => moveWeek("back")}>
           <ArrowBackIosNewIcon sx={{ width: 20 }} />
@@ -135,7 +146,7 @@ export default function TestTableMUI() {
         </IconButton>
       </Stack>
       <Paper sx={{ width: "100%" }}>
-        <TableContainer sx={{ maxHeight: 700 }}>
+        <TableContainer sx={{ maxHeight: 650 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -216,9 +227,10 @@ export default function TestTableMUI() {
                         align="center"
                         sx={{ borderRight: "1px solid #ddd" }}
                       >
-                        <Button variant="outlined" size="small">
-                          ＋
-                        </Button>
+                        <ShiftButton
+                          id={`${row.name}-${week[idx].format("YYYY-MM-DD")}`}
+                          weekKey={weekKey} // 親から weekKey を渡す
+                        />
                       </TableCell>
                     ))}
                   </TableRow>
