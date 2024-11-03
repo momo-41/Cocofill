@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { calcWeek, hour } from "../../const/test/utils";
+import { calcWeek } from "../../const/test/utils";
 import { Dayjs } from "dayjs";
 
 // 型指定
