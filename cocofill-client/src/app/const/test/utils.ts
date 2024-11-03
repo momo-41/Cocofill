@@ -3,8 +3,6 @@ import "dayjs/locale/ja";
 
 dayjs.locale("ja"); //日本語表示
 
-export const hour = (keys: number) => [...Array(keys).keys()];
-
 export function calcWeek(start?: string): Dayjs[] {
   //現在の週のデータを計算
   const date = start ? dayjs(start) : dayjs(); // 引数のstartに日付が入っていたらその日付を使ってdateに日付を返し、そうでない場合は現在の日付を返す
@@ -19,6 +17,9 @@ export function calcWeek(start?: string): Dayjs[] {
   }
   return week;
 }
-
 //"d"は「日付の操作」の単位
 //"day"は曜日に基づいて日付を操作できる
+
+//以下のhourはTestコンポーネントで必要
+
+export const hour = (keys: number) => [...Array(keys).keys()];
