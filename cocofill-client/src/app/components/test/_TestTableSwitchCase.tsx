@@ -70,7 +70,7 @@ const rows = [
   { name: "和田", shifts: ["遅", "遅", "中", "遅", "休", "休", ""] },
 ];
 
-export default function CustomShiftTable() {
+export default function TestTableSwitchCase() {
   return (
     <Paper sx={{ width: "100%" }}>
       <TableContainer sx={{ maxHeight: 700 }}>
