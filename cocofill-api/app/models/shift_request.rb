@@ -1,2 +1,0 @@
-class ShiftRequest < ApplicationRecord
-end
