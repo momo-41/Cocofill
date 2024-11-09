@@ -45,6 +45,7 @@ export default function EmployeesView() {
       {employees.map((employee) => (
         <Card key={employee.id} sx={{ maxWidth: 300, margin: 10 }}>
           <CardContent>
+            <Typography fontSize={12}>ID : {employee.id}</Typography>
             <Typography fontSize={16}>{employee.name}</Typography>
             <Typography variant="body2">
               {employee.work_style_week}日

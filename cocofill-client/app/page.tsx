@@ -1,7 +1,7 @@
 import React from "react";
 // import InputEmployeeView from "./components/InputEmployeeView";
 // import TestCalendarWeek from "./components/test/TestCalendarWeek";
-// import TestTableMUI from "./components/test/TestTableMUI";
+import TestTableMUI from "./components/test/TestTableMUI";
 import { Box } from "@mui/material";
 import EmployeesView from "./components/EmployeesView";
 // import TestTableSwitchCase from "./components/test/_TestTableSwitchCase";
@@ -18,7 +18,7 @@ const Page = () => {
       {/* <TestDayjs /> */}
       {/* <TestTableSwitchCase /> */}
       {/* <TestTableRowSpan /> */}
-      {/* <TestTableMUI /> */}
+      <TestTableMUI />
       {/* <TestCalendarWeek /> */}
     </Box>
   );

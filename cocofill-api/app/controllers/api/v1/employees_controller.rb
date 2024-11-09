@@ -1,7 +1,7 @@
 class Api::V1::EmployeesController < ApplicationController
   # すべての従業員情報を取得する
   def index
-    @employees = Employee.all
+    @employees = Employee.all # model名がemployeeのためインスタンス変数もそれに依存
     render json: @employees
   end
 
