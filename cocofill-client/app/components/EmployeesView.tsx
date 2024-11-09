@@ -17,6 +17,7 @@ interface Employee {
 }
 
 export default function EmployeesView() {
+  //リファクタ必須
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [error, setError] = useState<string | null>(null);
 
