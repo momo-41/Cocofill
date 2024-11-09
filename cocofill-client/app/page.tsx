@@ -3,7 +3,7 @@ import React from "react";
 // import TestCalendarWeek from "./_components/test/TestCalendarWeek";
 import TestTableMUI from "./_components/test/TestTableMUI";
 import { Box } from "@mui/material";
-import EmployeesView from "./_components/EmployeesView";
+// import EmployeesView from "./_components/EmployeesView";
 // import TestTableSwitchCase from "./_components/test/_TestTableSwitchCase";
 // import _TestTableRowSpan from "./_components/test/_TestTableRowSpan";
 // import TestCalendar from "./_components/test/_TestCalendar";
@@ -13,7 +13,7 @@ const Page = () => {
   return (
     <Box px={10}>
       {/* <InputEmployeeView /> */}
-      <EmployeesView />
+      {/* <EmployeesView /> */}
       {/* <TestCalendar /> */}
       {/* <TestDayjs /> */}
       {/* <TestTableSwitchCase /> */}
