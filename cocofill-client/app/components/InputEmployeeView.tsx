@@ -20,7 +20,7 @@ const InputEmployeeView = () => {
             label="希望の週休"
             variant="outlined"
           />
-          <TextField
+          {/* <TextField
             id="outlined-basic"
             label="希望の出勤時間"
             variant="outlined"
@@ -29,7 +29,7 @@ const InputEmployeeView = () => {
             id="outlined-basic"
             label="希望の退勤時間"
             variant="outlined"
-          />
+          /> */}
         </Stack>
       </Box>
     </>
