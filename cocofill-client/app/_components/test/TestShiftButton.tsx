@@ -10,7 +10,7 @@ interface ShiftButtonProps {
   weekKey: number; // 週の識別キー
 }
 
-export default function ShiftButton({ id, weekKey }: ShiftButtonProps) {
+export default function TestShiftButton({ id, weekKey }: ShiftButtonProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [selectedValue, setSelectedValue] = React.useState(
     () => localStorage.getItem(`selectedValue-${id}`) || "＋"
