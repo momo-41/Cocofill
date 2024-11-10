@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
@@ -12,14 +13,14 @@ interface ShiftButtonProps {
 
 export default function TestShiftButton({ id, weekKey }: ShiftButtonProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [selectedValue, setSelectedValue] = React.useState(
-    () => localStorage.getItem(`selectedValue-${id}`) || "＋"
-  );
+  const [selectedValue, setSelectedValue] = React.useState("＋");
 
   React.useEffect(() => {
-    // 週が変わったら localStorage から値を再取得
-    const storedValue = localStorage.getItem(`selectedValue-${id}`);
-    setSelectedValue(storedValue || "＋");
+    // クライアントサイドでのみlocalStorageにアクセス
+    if (typeof window !== "undefined") {
+      const storedValue = localStorage.getItem(`selectedValue-${id}`);
+      setSelectedValue(storedValue || "＋");
+    }
   }, [weekKey, id]);
 
   const open = Boolean(anchorEl);
@@ -34,7 +35,9 @@ export default function TestShiftButton({ id, weekKey }: ShiftButtonProps) {
 
   const handleMenuItemClick = (value: string) => {
     setSelectedValue(value); // 選択された値を状態に設定
-    localStorage.setItem(`selectedValue-${id}`, value);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(`selectedValue-${id}`, value);
+    }
     handleClose(); // メニューを閉じる
   };
 
