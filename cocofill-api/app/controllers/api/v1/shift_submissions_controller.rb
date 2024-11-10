@@ -36,6 +36,6 @@ class Api::V1::ShiftSubmissionsController < ApplicationController
   private
 
   def shift_submission_params
-    params.require(:shift_submission).permit(:date, :shift, :employee_id) # dateの型は"YYYY-MM-DD"形式
+    params.require(:shift_submission).permit(:date, :shift_request, :employee_id) # dateの型は"YYYY-MM-DD"形式
   end
 end
