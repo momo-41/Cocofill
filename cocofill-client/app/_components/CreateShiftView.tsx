@@ -18,7 +18,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { calcWeek } from "../_const/utils";
 import { Dayjs } from "dayjs";
-import TestShiftButton from "./test/TestShiftButton";
+import TestShiftButtonSimple from "./test/TestShiftButtonSimple";
 
 // 型指定
 interface Column {
@@ -44,7 +44,7 @@ interface ShiftSubmission {
 
 interface RowData {
   name: string;
-  shifts: string[];
+  shifts: Record<string, string>; // キー(日付)がstring型, 値(希望シフト)がstring型という意味
 }
 
 export default function CreateShiftView() {
@@ -57,6 +57,7 @@ export default function CreateShiftView() {
   const [rows, setRows] = useState<RowData[]>([]);
 
   useEffect(() => {
+    // method:"GET"は省略
     // 従業員情報の取得
     fetch("http://localhost:3001/api/v1/employees")
       .then((response) => response.json())
@@ -75,13 +76,16 @@ export default function CreateShiftView() {
   useEffect(() => {
     // 従業員とシフトの情報からRowsを生成
     const newRows = employees.map((employee) => {
-      const shifts = week.map((day) => {
+      const shifts: Record<string, string> = {}; // 各日付に対応するシフト情報を格納
+      week.forEach((day) => {
         const shiftSubmission = shiftSubmissions.find(
           (submission) =>
             submission.employee_id === employee.id &&
             submission.date === day.format("YYYY-MM-DD")
         );
-        return shiftSubmission ? shiftSubmission.shift : ""; // シフトがない場合は空文字を表示
+        shifts[day.format("YYYY-MM-DD")] = shiftSubmission
+          ? shiftSubmission.shift
+          : ""; // シフトがない場合は空文字を表示
       });
       return { name: employee.name, shifts };
     });
@@ -93,8 +97,8 @@ export default function CreateShiftView() {
   //   カラムを動的に生成;
   const columns: Column[] = [
     { id: "name", label: "", date: "", align: "center" as const, minWidth: 40 }, // as constにしないとエラーが出る
-    ...week.map((day, index) => ({
-      id: `day-${index}`,
+    ...week.map((day) => ({
+      id: day.format("YYYY-MM-DD"), // 日付形式でIDを設定
       label: day.format("dd"), // 曜日表示
       date: day.format("D日"), // 日付表示
       align: "center" as const,
@@ -183,7 +187,7 @@ export default function CreateShiftView() {
             </TableHead>
             <TableBody>
               {rows.map((row) => (
-                <>
+                <React.Fragment key={row.name}>
                   {/* 上段：シフト希望の表示 */}
                   <TableRow key={`${row.name}-1`}>
                     <TableCell
@@ -195,15 +199,26 @@ export default function CreateShiftView() {
                     >
                       {row.name}
                     </TableCell>
-                    {row.shifts.map((shift, idx) => (
-                      <TableCell
-                        key={`${row.name}-shift-${idx}`}
-                        align="center"
-                        sx={{ borderRight: "1px solid #ddd" }}
-                      >
-                        {shift}
-                      </TableCell>
-                    ))}
+                    {columns.slice(1, -1).map((column, idx) => {
+                      const shiftValue = row.shifts[column.id] || ""; // shiftの中で、column.id(YYYY-MM-DD型の日付)と一致したら、その値(可など)を表示
+                      console.log(
+                        "Row:",
+                        row.name,
+                        "Column ID:",
+                        column.id,
+                        "Shift Value:",
+                        shiftValue
+                      ); // デバッグ用
+                      return (
+                        <TableCell
+                          key={`${row.name}-shift-${idx}`}
+                          align="center"
+                          sx={{ borderRight: "1px solid #ddd" }}
+                        >
+                          {shiftValue}
+                        </TableCell>
+                      );
+                    })}
                     <TableCell
                       align="center"
                       rowSpan={2} // 合計セルも上下のセルを統合
@@ -214,20 +229,20 @@ export default function CreateShiftView() {
                   </TableRow>
                   {/* 下段：「+」ボタン表示 */}
                   <TableRow key={`${row.name}-2`}>
-                    {columns.slice(1, -1).map((_, idx) => (
+                    {columns.slice(1, -1).map((column, idx) => (
                       <TableCell
                         key={`${row.name}-button-${idx}`}
                         align="center"
                         sx={{ borderRight: "1px solid #ddd" }}
                       >
-                        <TestShiftButton
-                          id={`${row.name}-${week[idx].format("YYYY-MM-DD")}`}
-                          weekKey={weekKey} // 親から weekKey を渡す
+                        <TestShiftButtonSimple
+                          id={`${row.name}-${column.id}`} // 日付キーと一致
+                          weekKey={weekKey} // 親からweekKey(現在の週の情報)を渡す
                         />
                       </TableCell>
                     ))}
                   </TableRow>
-                </>
+                </React.Fragment>
               ))}
             </TableBody>
           </Table>
