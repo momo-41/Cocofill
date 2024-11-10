@@ -17,7 +17,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { calcWeek } from "../../_const/utils";
 import { Dayjs } from "dayjs";
-import TestShiftButtonSimple from "./TestShiftButtonSimple";
+import TestShiftButton from "./TestShiftButton";
 
 // 型指定
 interface Column {
@@ -301,7 +301,7 @@ export default function TestTableMUI() {
                         align="center"
                         sx={{ borderRight: "1px solid #ddd" }}
                       >
-                        <TestShiftButtonSimple
+                        <TestShiftButton
                           id={`${row.name}-${column.id}`} // 日付キーと一致
                           weekKey={weekKey} // 親から weekKey を渡す
                         />
