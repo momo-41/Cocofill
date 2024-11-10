@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Paper,
   TableContainer,
@@ -12,12 +12,13 @@ import {
   Button,
   IconButton,
   Stack,
+  Box,
 } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { calcWeek } from "../../const/test/utils";
+import { calcWeek } from "../_const/utils";
 import { Dayjs } from "dayjs";
-import ShiftButton from "../ShiftButton";
+import TestShiftButton from "./test/TestShiftButton";
 
 // 型指定
 interface Column {
@@ -28,80 +29,76 @@ interface Column {
   minWidth: number;
 }
 
-interface RowData {
+interface Employee {
+  id: number;
   name: string;
-  shifts: string[];
+  role: string;
+  work_style_week: number;
 }
 
-const rows: RowData[] = [
-  {
-    name: "立花",
-    shifts: ["可", "可", "可", "可", "可", "可", "可"],
-  },
-  {
-    name: "齋藤",
-    shifts: ["可", "可", "可", "可", "可", "可", "可"],
-  },
-  {
-    name: "金子",
-    shifts: ["朝", "朝", "朝", "朝", "朝", "どちらか休み", "どちらか休み"],
-  },
-  {
-    name: "和田",
-    shifts: [
-      "中or遅",
-      "中or遅",
-      "中or遅",
-      "中or遅",
-      "中or遅",
-      "休 希望",
-      "中or遅",
-    ],
-  },
-  {
-    name: "大橋",
-    shifts: ["可", "休", "休", "可", "休", "可", "可"],
-  },
-  {
-    name: "折口",
-    shifts: [
-      "和田",
-      "中or遅",
-      "中or遅",
-      "中or遅",
-      "中or遅",
-      "中or遅",
-      "休 希望",
-    ],
-  },
-  {
-    name: "今井",
-    shifts: ["朝", "朝", "朝", "朝", "朝", "休", "休"],
-  },
-  {
-    name: "佐々木",
-    shifts: ["朝", "朝", "休 希望", "朝", "朝", "朝", "朝"],
-  },
-  {
-    name: "石上",
-    shifts: ["朝", "朝", "朝", "朝", "朝", "朝", "朝"],
-  },
-  {
-    name: "渡辺",
-    shifts: ["朝", "朝", "朝", "朝", "朝", "朝", "朝"],
-  },
-];
+interface ShiftSubmission {
+  employee_id: number;
+  date: string;
+  shift: string;
+}
 
-export default function TestTableMUI() {
+interface RowData {
+  name: string;
+  shifts: Record<string, string>; // キー(日付)がstring型, 値(希望シフト)がstring型という意味
+}
+
+export default function CreateShiftView() {
   const [week, setWeek] = useState<Dayjs[]>(calcWeek()); //calcWeekは現在の週のデータを返している
-
   const [weekKey, setWeekKey] = useState(0); // 週が変わる度にbuttonの表示をリセットするために追加
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [shiftSubmissions, setShiftSubmissions] = useState<ShiftSubmission[]>(
+    []
+  );
+  const [rows, setRows] = useState<RowData[]>([]);
 
-  // カラムを動的に生成
+  useEffect(() => {
+    // method:"GET"は省略
+    // 従業員情報の取得
+    fetch("http://localhost:3001/api/v1/employees")
+      .then((response) => response.json())
+      .then((data) => setEmployees(data))
+      .catch((error) => console.error("Error fetching employees:", error));
+
+    // 提出されたシフトの取得
+    fetch("http://localhost:3001/api/v1/shift_submissions")
+      .then((response) => response.json())
+      .then((data) => setShiftSubmissions(data))
+      .catch((error) =>
+        console.error("Error fetching shift-submissions:", error)
+      );
+  }, []);
+
+  useEffect(() => {
+    // 従業員とシフトの情報からRowsを生成
+    const newRows = employees.map((employee) => {
+      const shifts: Record<string, string> = {}; // 各日付に対応するシフト情報を格納
+      week.forEach((day) => {
+        const shiftSubmission = shiftSubmissions.find(
+          (submission) =>
+            submission.employee_id === employee.id &&
+            submission.date === day.format("YYYY-MM-DD")
+        );
+        shifts[day.format("YYYY-MM-DD")] = shiftSubmission
+          ? shiftSubmission.shift
+          : ""; // シフトがない場合は空文字を表示
+      });
+      return { name: employee.name, shifts };
+    });
+    setRows(newRows);
+  }, [employees, shiftSubmissions, week]); // employees,shiftSubmissions,weekのどれかが変更されたらこのuseEffectを実行
+
+  console.log(rows);
+
+  //   カラムを動的に生成;
   const columns: Column[] = [
     { id: "name", label: "", date: "", align: "center" as const, minWidth: 40 }, // as constにしないとエラーが出る
-    ...week.map((day, index) => ({
-      id: `day-${index}`,
+    ...week.map((day) => ({
+      id: day.format("YYYY-MM-DD"), // 日付形式でIDを設定
       label: day.format("dd"), // 曜日表示
       date: day.format("D日"), // 日付表示
       align: "center" as const,
@@ -127,7 +124,7 @@ export default function TestTableMUI() {
   };
 
   return (
-    <>
+    <Box px={10}>
       <Stack direction="row" padding={1}>
         <Button
           onClick={() => {
@@ -190,7 +187,7 @@ export default function TestTableMUI() {
             </TableHead>
             <TableBody>
               {rows.map((row) => (
-                <>
+                <React.Fragment key={row.name}>
                   {/* 上段：シフト希望の表示 */}
                   <TableRow key={`${row.name}-1`}>
                     <TableCell
@@ -202,15 +199,26 @@ export default function TestTableMUI() {
                     >
                       {row.name}
                     </TableCell>
-                    {row.shifts.map((shift, idx) => (
-                      <TableCell
-                        key={`${row.name}-shift-${idx}`}
-                        align="center"
-                        sx={{ borderRight: "1px solid #ddd" }}
-                      >
-                        {shift}
-                      </TableCell>
-                    ))}
+                    {columns.slice(1, -1).map((column, idx) => {
+                      const shiftValue = row.shifts[column.id] || ""; // shiftの中で、column.id(YYYY-MM-DD型の日付)と一致したら、その値(可など)を表示
+                      console.log(
+                        "Row:",
+                        row.name,
+                        "Column ID:",
+                        column.id,
+                        "Shift Value:",
+                        shiftValue
+                      ); // デバッグ用
+                      return (
+                        <TableCell
+                          key={`${row.name}-shift-${idx}`}
+                          align="center"
+                          sx={{ borderRight: "1px solid #ddd" }}
+                        >
+                          {shiftValue}
+                        </TableCell>
+                      );
+                    })}
                     <TableCell
                       align="center"
                       rowSpan={2} // 合計セルも上下のセルを統合
@@ -221,25 +229,25 @@ export default function TestTableMUI() {
                   </TableRow>
                   {/* 下段：「+」ボタン表示 */}
                   <TableRow key={`${row.name}-2`}>
-                    {columns.slice(1, -1).map((_, idx) => (
+                    {columns.slice(1, -1).map((column, idx) => (
                       <TableCell
                         key={`${row.name}-button-${idx}`}
                         align="center"
                         sx={{ borderRight: "1px solid #ddd" }}
                       >
-                        <ShiftButton
-                          id={`${row.name}-${week[idx].format("YYYY-MM-DD")}`}
-                          weekKey={weekKey} // 親から weekKey を渡す
+                        <TestShiftButton
+                          id={`${row.name}-${column.id}`} // 日付キーと一致
+                          weekKey={weekKey} // 親からweekKey(現在の週の情報)を渡す
                         />
                       </TableCell>
                     ))}
                   </TableRow>
-                </>
+                </React.Fragment>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       </Paper>
-    </>
+    </Box>
   );
 }

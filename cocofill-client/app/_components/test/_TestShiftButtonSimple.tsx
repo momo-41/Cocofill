@@ -10,17 +10,17 @@ interface ShiftButtonProps {
   weekKey: number; // 週の識別キー
 }
 
-export default function ShiftButton({ id, weekKey }: ShiftButtonProps) {
+export default function TestShiftButtonSimple({
+  id,
+  weekKey,
+}: ShiftButtonProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [selectedValue, setSelectedValue] = React.useState(
-    () => localStorage.getItem(`selectedValue-${id}`) || "＋"
-  );
+  const [selectedValue, setSelectedValue] = React.useState("＋"); // 初期値のみ指定
 
   React.useEffect(() => {
-    // 週が変わったら localStorage から値を再取得
-    const storedValue = localStorage.getItem(`selectedValue-${id}`);
-    setSelectedValue(storedValue || "＋");
-  }, [weekKey, id]);
+    // 週が変わったときに選択状態をリセットする場合
+    setSelectedValue("＋");
+  }, [weekKey]);
 
   const open = Boolean(anchorEl);
 
@@ -34,7 +34,6 @@ export default function ShiftButton({ id, weekKey }: ShiftButtonProps) {
 
   const handleMenuItemClick = (value: string) => {
     setSelectedValue(value); // 選択された値を状態に設定
-    localStorage.setItem(`selectedValue-${id}`, value);
     handleClose(); // メニューを閉じる
   };
 
