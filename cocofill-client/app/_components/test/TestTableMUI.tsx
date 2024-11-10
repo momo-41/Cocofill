@@ -17,7 +17,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { calcWeek } from "../../_const/utils";
 import { Dayjs } from "dayjs";
-import TestShiftButton from "./TestShiftButton";
+import TestShiftButtonSimple from "./TestShiftButtonSimple";
 
 // 型指定
 interface Column {
@@ -265,16 +265,26 @@ export default function TestTableMUI() {
                     >
                       {row.name}
                     </TableCell>
-                    {columns.slice(1, -1).map((column, idx) => (
-                      <TableCell
-                        key={`${row.name}-shift-${idx}`}
-                        align="center"
-                        sx={{ borderRight: "1px solid #ddd" }}
-                      >
-                        {row.shifts[column.id] || ""}
-                        {/* 一致した日付のシフトを表示(日付が無い場合は空文字) */}
-                      </TableCell>
-                    ))}
+                    {columns.slice(1, -1).map((column, idx) => {
+                      const shiftValue = row.shifts[column.id] || ""; //一致した日付のシフトを表示(日付が無い場合は空文字)
+                      console.log(
+                        "Row:",
+                        row.name,
+                        "Column ID:",
+                        column.id,
+                        "Shift Value:",
+                        shiftValue
+                      ); // デバッグ用
+                      return (
+                        <TableCell
+                          key={`${row.name}-shift-${idx}`}
+                          align="center"
+                          sx={{ borderRight: "1px solid #ddd" }}
+                        >
+                          {shiftValue}
+                        </TableCell>
+                      );
+                    })}
                     <TableCell
                       align="center"
                       rowSpan={2} // 合計セルも上下のセルを統合
@@ -291,7 +301,7 @@ export default function TestTableMUI() {
                         align="center"
                         sx={{ borderRight: "1px solid #ddd" }}
                       >
-                        <TestShiftButton
+                        <TestShiftButtonSimple
                           id={`${row.name}-${column.id}`} // 日付キーと一致
                           weekKey={weekKey} // 親から weekKey を渡す
                         />
