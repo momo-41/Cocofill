@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_09_074326) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_10_091955) do
   create_table "employees", force: :cascade do |t|
     t.string "name"
     t.string "role"
@@ -22,7 +22,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_09_074326) do
   create_table "shift_submissions", force: :cascade do |t|
     t.integer "employee_id", null: false
     t.date "date"
-    t.string "shift"
+    t.string "shift_request"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["employee_id"], name: "index_shift_submissions_on_employee_id"
