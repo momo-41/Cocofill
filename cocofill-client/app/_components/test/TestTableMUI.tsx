@@ -17,7 +17,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { calcWeek } from "../../_const/utils";
 import { Dayjs } from "dayjs";
-import ShiftButton from "../ShiftButton";
+import TestShiftButton from "./TestShiftButton";
 
 // 型指定
 interface Column {
@@ -30,65 +30,129 @@ interface Column {
 
 interface RowData {
   name: string;
-  shifts: string[];
+  shifts: Record<string, string>; // 日付ごとのシフト情報
 }
 
 const rows: RowData[] = [
   {
     name: "立花",
-    shifts: ["可", "可", "可", "可", "可", "可", "可"],
+    shifts: {
+      "2024-11-11": "可",
+      "2024-11-12": "可",
+      "2024-11-13": "可",
+      "2024-11-14": "可",
+      "2024-11-15": "可",
+      "2024-11-16": "可",
+      "2024-11-17": "可",
+    },
   },
   {
     name: "齋藤",
-    shifts: ["可", "可", "可", "可", "可", "可", "可"],
+    shifts: {
+      "2024-11-11": "可",
+      "2024-11-12": "可",
+      "2024-11-13": "可",
+      "2024-11-14": "可",
+      "2024-11-15": "可",
+      "2024-11-16": "可",
+      "2024-11-17": "可",
+    },
   },
   {
     name: "金子",
-    shifts: ["朝", "朝", "朝", "朝", "朝", "どちらか休み", "どちらか休み"],
+    shifts: {
+      "2024-11-11": "朝",
+      "2024-11-12": "朝",
+      "2024-11-13": "朝",
+      "2024-11-14": "朝",
+      "2024-11-15": "朝",
+      "2024-11-16": "どちらか休み",
+      "2024-11-17": "どちらか休み",
+    },
   },
   {
     name: "和田",
-    shifts: [
-      "中or遅",
-      "中or遅",
-      "中or遅",
-      "中or遅",
-      "中or遅",
-      "休 希望",
-      "中or遅",
-    ],
+    shifts: {
+      "2024-11-11": "中or遅",
+      "2024-11-12": "中or遅",
+      "2024-11-13": "中or遅",
+      "2024-11-14": "中or遅",
+      "2024-11-15": "中or遅",
+      "2024-11-16": "休 希望",
+      "2024-11-17": "中or遅",
+    },
   },
   {
     name: "大橋",
-    shifts: ["可", "休", "休", "可", "休", "可", "可"],
+    shifts: {
+      "2024-11-11": "可",
+      "2024-11-12": "休",
+      "2024-11-13": "休",
+      "2024-11-14": "可",
+      "2024-11-15": "休",
+      "2024-11-16": "可",
+      "2024-11-17": "可",
+    },
   },
   {
     name: "折口",
-    shifts: [
-      "和田",
-      "中or遅",
-      "中or遅",
-      "中or遅",
-      "中or遅",
-      "中or遅",
-      "休 希望",
-    ],
+    shifts: {
+      "2024-11-11": "中or遅",
+      "2024-11-12": "中or遅",
+      "2024-11-13": "休 希望",
+      "2024-11-14": "中or遅",
+      "2024-11-15": "中or遅",
+      "2024-11-16": "休 希望",
+      "2024-11-17": "中or遅",
+    },
   },
   {
     name: "今井",
-    shifts: ["朝", "朝", "朝", "朝", "朝", "休", "休"],
+    shifts: {
+      "2024-11-11": "可",
+      "2024-11-12": "可",
+      "2024-11-13": "可",
+      "2024-11-14": "可",
+      "2024-11-15": "可",
+      "2024-11-16": "休",
+      "2024-11-17": "休",
+    },
   },
   {
     name: "佐々木",
-    shifts: ["朝", "朝", "休 希望", "朝", "朝", "朝", "朝"],
+    shifts: {
+      "2024-11-11": "可",
+      "2024-11-12": "可",
+      "2024-11-13": "休 希望",
+      "2024-11-14": "可",
+      "2024-11-15": "可",
+      "2024-11-16": "可",
+      "2024-11-17": "可",
+    },
   },
   {
     name: "石上",
-    shifts: ["朝", "朝", "朝", "朝", "朝", "朝", "朝"],
+    shifts: {
+      "2024-11-11": "可",
+      "2024-11-12": "可",
+      "2024-11-13": "可",
+      "2024-11-14": "可",
+      "2024-11-15": "可",
+      "2024-11-16": "可",
+      "2024-11-17": "可",
+    },
   },
   {
     name: "渡辺",
-    shifts: ["朝", "朝", "朝", "朝", "朝", "朝", "朝"],
+    shifts: {
+      "2024-11-11": "可",
+      "2024-11-12": "可",
+      "2024-11-13": "可",
+      "2024-11-14": "可",
+      "2024-11-15": "可",
+      "2024-11-16": "可",
+      "2024-11-17": "可",
+    },
   },
 ];
 
@@ -97,11 +161,10 @@ export default function TestTableMUI() {
 
   const [weekKey, setWeekKey] = useState(0); // 週が変わる度にbuttonの表示をリセットするために追加
 
-  // カラムを動的に生成
   const columns: Column[] = [
-    { id: "name", label: "", date: "", align: "center" as const, minWidth: 40 }, // as constにしないとエラーが出る
-    ...week.map((day, index) => ({
-      id: `day-${index}`,
+    { id: "name", label: "", date: "", align: "center" as const, minWidth: 40 }, // as constにしないとTypeScriptのエラーが出る
+    ...week.map((day) => ({
+      id: day.format("YYYY-MM-DD"), // 日付形式でIDを設定
       label: day.format("dd"), // 曜日表示
       date: day.format("D日"), // 日付表示
       align: "center" as const,
@@ -190,25 +253,26 @@ export default function TestTableMUI() {
             </TableHead>
             <TableBody>
               {rows.map((row) => (
-                <>
+                <React.Fragment key={row.name}>
                   {/* 上段：シフト希望の表示 */}
                   <TableRow key={`${row.name}-1`}>
                     <TableCell
                       component="th"
                       scope="row"
                       align="center"
-                      rowSpan={2} //名前のセルは上下のセルを統合
+                      rowSpan={2} // 名前のセルは上下のセルを統合
                       sx={{ borderRight: "1px solid #ddd" }}
                     >
                       {row.name}
                     </TableCell>
-                    {row.shifts.map((shift, idx) => (
+                    {columns.slice(1, -1).map((column, idx) => (
                       <TableCell
                         key={`${row.name}-shift-${idx}`}
                         align="center"
                         sx={{ borderRight: "1px solid #ddd" }}
                       >
-                        {shift}
+                        {row.shifts[column.id] || ""}
+                        {/* 一致した日付のシフトを表示(日付が無い場合は空文字) */}
                       </TableCell>
                     ))}
                     <TableCell
@@ -221,20 +285,20 @@ export default function TestTableMUI() {
                   </TableRow>
                   {/* 下段：「+」ボタン表示 */}
                   <TableRow key={`${row.name}-2`}>
-                    {columns.slice(1, -1).map((_, idx) => (
+                    {columns.slice(1, -1).map((column, idx) => (
                       <TableCell
                         key={`${row.name}-button-${idx}`}
                         align="center"
                         sx={{ borderRight: "1px solid #ddd" }}
                       >
-                        <ShiftButton
-                          id={`${row.name}-${week[idx].format("YYYY-MM-DD")}`}
+                        <TestShiftButton
+                          id={`${row.name}-${column.id}`} // 日付キーと一致
                           weekKey={weekKey} // 親から weekKey を渡す
                         />
                       </TableCell>
                     ))}
                   </TableRow>
-                </>
+                </React.Fragment>
               ))}
             </TableBody>
           </Table>
