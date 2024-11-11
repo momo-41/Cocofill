@@ -39,7 +39,7 @@ interface Employee {
 interface ShiftSubmission {
   employee_id: number;
   date: string;
-  shift: string;
+  shift_request: string;
 }
 
 interface RowData {
@@ -84,7 +84,7 @@ export default function CreateShiftView() {
             submission.date === day.format("YYYY-MM-DD")
         );
         shifts[day.format("YYYY-MM-DD")] = shiftSubmission
-          ? shiftSubmission.shift
+          ? shiftSubmission.shift_request
           : ""; // シフトがない場合は空文字を表示
       });
       return { name: employee.name, shifts };
@@ -210,6 +210,7 @@ export default function CreateShiftView() {
                       //   "Shift Value:",
                       //   shiftValue
                       // );
+                      console.log(rows);
                       return (
                         <TableCell
                           key={`${row.name}-shift-${idx}`}
