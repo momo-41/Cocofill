@@ -96,7 +96,7 @@ export default function CreateShiftView() {
 
   //   カラムを動的に生成;
   const columns: Column[] = [
-    { id: "name", label: "", date: "", align: "center" as const, minWidth: 40 }, // as constにしないとエラーが出る
+    { id: "name", label: "", date: "", align: "center" as const, minWidth: 40 }, // as constにしないとTypeScriptエラーが出る
     ...week.map((day) => ({
       id: day.format("YYYY-MM-DD"), // 日付形式でIDを設定
       label: day.format("dd"), // 曜日表示
