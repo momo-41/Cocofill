@@ -19,7 +19,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { calcWeek } from "../_const/utils";
 import { Dayjs } from "dayjs";
 import TestShiftButton from "./test/TestShiftButton";
-import { countWorkDays } from "../_const/count-work-days";
+// import { countWorkDays } from "../_const/count-work-days";
 
 // 型指定
 interface Column {
@@ -188,15 +188,6 @@ export default function CreateShiftView() {
             </TableHead>
             <TableBody>
               {rows.map((row) => {
-                // 各従業員の週の出勤回数を計算
-                const startDate = week[0].format("YYYY-MM-DD");
-                const endDate = week[week.length - 1].format("YYYY-MM-DD");
-                const workDaysCount = countWorkDays(
-                  row.name,
-                  startDate,
-                  endDate
-                );
-
                 return (
                   <React.Fragment key={row.name}>
                     {/* 上段：シフト希望の表示 */}
@@ -239,7 +230,7 @@ export default function CreateShiftView() {
                         rowSpan={2} // 合計セルも上下のセルを統合
                         sx={{ borderRight: "1px solid #ddd" }}
                       >
-                        {workDaysCount} {/* 出勤回数を表示 */}
+                        {/* 出勤回数を表示 */}
                       </TableCell>
                     </TableRow>
                     {/* 下段：「+」ボタン表示 */}
@@ -251,7 +242,7 @@ export default function CreateShiftView() {
                           sx={{ borderRight: "1px solid #ddd" }}
                         >
                           <TestShiftButton
-                            id={`${row.name}-${column.id}`} // 日付キーと一致
+                            id={`${row.name}-${column.id}`} // 従業員の名前-日付になっている(立花-2024-11-11)
                             weekKey={weekKey} // 親からweekKey(現在の週の情報)を渡す
                           />
                         </TableCell>
