@@ -13,6 +13,7 @@ import {
   IconButton,
   Stack,
   Box,
+  Typography,
 } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -20,6 +21,7 @@ import { calcWeek } from "../_const/utils";
 import { Dayjs } from "dayjs";
 import TestShiftButton from "./test/TestShiftButton";
 import { countWorkDays } from "../_const/count-work-days";
+import CompareWorkStyleWeek from "./CompareWorkStyleWeek";
 
 // 型指定
 interface Column {
@@ -238,8 +240,18 @@ export default function CreateShiftView() {
                         rowSpan={2} // 合計セルも上下のセルを統合
                         sx={{ borderRight: "1px solid #ddd" }}
                       >
-                        {workDaysCount}
                         {/* 出勤回数を表示 */}
+                        <Typography>{workDaysCount}</Typography>
+                        {/* 出勤回数と希望の出勤回数との比較 */}
+                        <Typography>
+                          <CompareWorkStyleWeek
+                            workDaysCount={workDaysCount}
+                            workStyleWeek={
+                              employees.find((e) => e.name === row.name)
+                                ?.work_style_week || 0
+                            } //列の名前とemployeesのnameが一致したら、work_style_weekの値(希望の働く日数)を取得し、undefinedの場合は0を返す
+                          />
+                        </Typography>
                       </TableCell>
                     </TableRow>
                     {/* 下段：「+」ボタン表示 */}
