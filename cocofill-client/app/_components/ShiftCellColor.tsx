@@ -1,32 +1,32 @@
-import React from "react";
-import { TableCell } from "@mui/material";
+// import React from "react";
+// import { TableCell } from "@mui/material";
 
-interface ShiftCellColorProps {
-  shiftValue: string;
-  selectedValue: string;
-  children: React.ReactNode;
-}
+// interface ShiftCellColorProps {
+//   shiftValue: string;
+//   selectedValue: string;
+//   children: React.ReactNode;
+// }
 
-const ShiftCellColor: React.FC<ShiftCellColorProps> = ({
-  shiftValue,
-  selectedValue,
-  children,
-}) => {
-  console.log("ShiftCellColor:", { shiftValue, selectedValue }); // デバッグ用
-  // 条件に基づいて背景色を変更
-  const backgroundColor =
-    shiftValue === "朝" && (selectedValue === "中" || selectedValue === "遅")
-      ? "rgba(255, 0, 0, 0.5)" // 薄い赤色
-      : "transparent"; // デフォルトの背景色
+// const ShiftCellColor: React.FC<ShiftCellColorProps> = ({
+//   shiftValue,
+//   selectedValue,
+//   children,
+// }) => {
+//   console.log("ShiftCellColor:", { shiftValue, selectedValue }); // デバッグ用
+//   // 条件に基づいて背景色を変更
+//   const backgroundColor =
+//     shiftValue === "朝" && (selectedValue === "中" || selectedValue === "遅")
+//       ? "rgba(255, 0, 0, 0.5)" // 薄い赤色
+//       : "transparent"; // デフォルトの背景色
 
-  return (
-    <TableCell
-      align="center"
-      sx={{ backgroundColor, borderRight: "1px solid #ddd" }}
-    >
-      {children}
-    </TableCell>
-  );
-};
+//   return (
+//     <TableCell
+//       align="center"
+//       sx={{ backgroundColor, borderRight: "1px solid #ddd" }}
+//     >
+//       {children}
+//     </TableCell>
+//   );
+// };
 
-export default ShiftCellColor;
+// export default ShiftCellColor;
