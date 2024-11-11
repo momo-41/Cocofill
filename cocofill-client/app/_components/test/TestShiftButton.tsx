@@ -15,15 +15,15 @@ export default function TestShiftButton({ id, weekKey }: ShiftButtonProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [selectedValue, setSelectedValue] = React.useState("＋");
 
+  const open = Boolean(anchorEl);
+
+  // クライアントサイドでのみlocalStorageにアクセス
   React.useEffect(() => {
-    // クライアントサイドでのみlocalStorageにアクセス
     if (typeof window !== "undefined") {
-      const storedValue = localStorage.getItem(`selectedValue-${id}`);
+      const storedValue = localStorage.getItem(id); // 修正：キーをidに統一
       setSelectedValue(storedValue || "＋");
     }
   }, [weekKey, id]);
-
-  const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -36,7 +36,7 @@ export default function TestShiftButton({ id, weekKey }: ShiftButtonProps) {
   const handleMenuItemClick = (value: string) => {
     setSelectedValue(value); // 選択された値を状態に設定
     if (typeof window !== "undefined") {
-      localStorage.setItem(`selectedValue-${id}`, value);
+      localStorage.setItem(id, value); // 修正：キーをidに統一
     }
     handleClose(); // メニューを閉じる
   };
