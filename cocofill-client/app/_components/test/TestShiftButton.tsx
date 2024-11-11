@@ -15,8 +15,8 @@ export default function TestShiftButton({ id, weekKey }: ShiftButtonProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [selectedValue, setSelectedValue] = React.useState("＋");
 
+  // クライアントサイドでのみlocalStorageにアクセス
   React.useEffect(() => {
-    // クライアントサイドでのみlocalStorageにアクセス
     if (typeof window !== "undefined") {
       const storedValue = localStorage.getItem(`selectedValue-${id}`);
       setSelectedValue(storedValue || "＋");
