@@ -36,7 +36,7 @@ export default function TestShiftButton({ id, weekKey }: ShiftButtonProps) {
   const handleMenuItemClick = (value: string) => {
     setSelectedValue(value); // 選択された値を状態に設定
     if (typeof window !== "undefined") {
-      localStorage.setItem(`selectedValue-${id}`, value);
+      localStorage.setItem(id, value);
     }
     handleClose(); // メニューを閉じる
   };
