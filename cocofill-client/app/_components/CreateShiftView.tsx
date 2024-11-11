@@ -110,9 +110,9 @@ export default function CreateShiftView() {
     {
       id: "sum",
       label: "",
-      date: "合計",
+      date: "希望比較",
       align: "center" as const,
-      minWidth: 70,
+      minWidth: 100,
     },
   ];
 
@@ -127,7 +127,7 @@ export default function CreateShiftView() {
   };
 
   return (
-    <Box px={10}>
+    <Box px={9}>
       <Stack direction="row" padding={1}>
         <Button
           onClick={() => {
@@ -240,18 +240,16 @@ export default function CreateShiftView() {
                         rowSpan={2} // 合計セルも上下のセルを統合
                         sx={{ borderRight: "1px solid #ddd" }}
                       >
-                        {/* 出勤回数を表示 */}
-                        <Typography>{workDaysCount}</Typography>
                         {/* 出勤回数と希望の出勤回数との比較 */}
-                        <Typography>
-                          <CompareWorkStyleWeek
-                            workDaysCount={workDaysCount}
-                            workStyleWeek={
-                              employees.find((e) => e.name === row.name)
-                                ?.work_style_week || 0
-                            } //列の名前とemployeesのnameが一致したら、work_style_weekの値(希望の働く日数)を取得し、undefinedの場合は0を返す
-                          />
-                        </Typography>
+                        <CompareWorkStyleWeek
+                          workDaysCount={workDaysCount}
+                          workStyleWeek={
+                            employees.find((e) => e.name === row.name)
+                              ?.work_style_week || 0
+                          } //列の名前とemployeesのnameが一致したら、work_style_weekの値(希望の働く日数)を取得し、undefinedの場合は0を返す
+                        />
+                        {/* 出勤回数を表示 */}
+                        勤務日数 {workDaysCount} 日
                       </TableCell>
                     </TableRow>
                     {/* 下段：「+」ボタン表示 */}
