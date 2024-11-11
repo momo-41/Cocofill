@@ -20,7 +20,6 @@ import { calcWeek } from "../_const/utils";
 import { Dayjs } from "dayjs";
 import TestShiftButton from "./test/TestShiftButton";
 // import { countWorkDays } from "../_const/count-work-days";
-
 // 型指定
 interface Column {
   id: string;
@@ -187,70 +186,67 @@ export default function CreateShiftView() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => {
-                return (
-                  <React.Fragment key={row.name}>
-                    {/* 上段：シフト希望の表示 */}
-                    <TableRow key={`${row.name}-1`}>
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        align="center"
-                        rowSpan={2} //名前のセルは上下のセルを統合
-                        sx={{ borderRight: "1px solid #ddd" }}
-                      >
-                        {row.name}
-                      </TableCell>
-                      {columns.slice(1, -1).map((column, idx) => {
-                        const shiftValue = row.shifts[column.id] || ""; // shiftの中で、column.id(YYYY-MM-DD型の日付)と一致したら、その値(可など)を表示
-                        // デバッグ用
-                        // console.log(
-                        //   "Row:",
-                        //   row.name,
-                        //   "Column ID:",
-                        //   column.id,
-                        //   "Shift Value:",
-                        //   shiftValue
-                        // );
-                        // デバッグ用
-                        // console.log(rows);
-                        return (
-                          <TableCell
-                            key={`${row.name}-shift-${idx}`}
-                            align="center"
-                            sx={{ borderRight: "1px solid #ddd" }}
-                          >
-                            {shiftValue}
-                          </TableCell>
-                        );
-                      })}
-                      {/* 合計セル（上段と下段を統合） */}
-                      <TableCell
-                        align="center"
-                        rowSpan={2} // 合計セルも上下のセルを統合
-                        sx={{ borderRight: "1px solid #ddd" }}
-                      >
-                        {/* 出勤回数を表示 */}
-                      </TableCell>
-                    </TableRow>
-                    {/* 下段：「+」ボタン表示 */}
-                    <TableRow key={`${row.name}-2`}>
-                      {columns.slice(1, -1).map((column, idx) => (
+              {rows.map((row) => (
+                <React.Fragment key={row.name}>
+                  {/* 上段：シフト希望の表示 */}
+                  <TableRow key={`${row.name}-1`}>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      align="center"
+                      rowSpan={2} //名前のセルは上下のセルを統合
+                      sx={{ borderRight: "1px solid #ddd" }}
+                    >
+                      {row.name}
+                    </TableCell>
+                    {columns.slice(1, -1).map((column, idx) => {
+                      const shiftValue = row.shifts[column.id] || ""; // shiftの中で、column.id(YYYY-MM-DD型の日付)と一致したら、その値(可など)を表示
+                      // デバッグ用
+                      // console.log(
+                      //   "Row:",
+                      //   row.name,
+                      //   "Column ID:",
+                      //   column.id,
+                      //   "Shift Value:",
+                      //   shiftValue
+                      // );
+                      console.log(rows);
+                      return (
                         <TableCell
-                          key={`${row.name}-button-${idx}`}
+                          key={`${row.name}-shift-${idx}`}
                           align="center"
                           sx={{ borderRight: "1px solid #ddd" }}
                         >
-                          <TestShiftButton
-                            id={`${row.name}-${column.id}`} // 従業員の名前-日付になっている(立花-2024-11-11)
-                            weekKey={weekKey} // 親からweekKey(現在の週の情報)を渡す
-                          />
+                          {shiftValue}
                         </TableCell>
-                      ))}
-                    </TableRow>
-                  </React.Fragment>
-                );
-              })}
+                      );
+                    })}
+                    {/* 合計セル（上段と下段を統合） */}
+                    <TableCell
+                      align="center"
+                      rowSpan={2} // 合計セルも上下のセルを統合
+                      sx={{ borderRight: "1px solid #ddd" }}
+                    >
+                      {/* 出勤回数を表示 */}
+                    </TableCell>
+                  </TableRow>
+                  {/* 下段：「+」ボタン表示 */}
+                  <TableRow key={`${row.name}-2`}>
+                    {columns.slice(1, -1).map((column, idx) => (
+                      <TableCell
+                        key={`${row.name}-button-${idx}`}
+                        align="center"
+                        sx={{ borderRight: "1px solid #ddd" }}
+                      >
+                        <TestShiftButton
+                          id={`${row.name}-${column.id}`} // 日付キーと一致
+                          weekKey={weekKey} // 親からweekKey(現在の週の情報)を渡す
+                        />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </React.Fragment>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
