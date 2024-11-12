@@ -84,12 +84,12 @@ const DaysGrid = styled(Box)(() => ({
   gridTemplateColumns: "repeat(7, 1fr) ",
 }));
 
-const Wrapper = styled(Box)(({ theme }) => ({
+const Wrapper = styled(Box)(() => ({
   width: "100%",
   margin: 4,
 }));
 
-const FirstGrid = styled(Box)(({ theme }) => ({
+const FirstGrid = styled(Box)(() => ({
   display: "grid",
   gridTemplateColumns: "50px calc(100% - 50px)", //左側を50px, 右側を100%-50pxで区切っている
 }));
