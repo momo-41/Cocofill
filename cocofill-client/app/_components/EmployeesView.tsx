@@ -19,7 +19,7 @@ interface Employee {
 export default function EmployeesView() {
   //リファクタ必須
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [error, setError] = useState<string | null>(null); //error使われてない
+  // const [error, setError] = useState<string | null>(null); //error使われてない
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -32,7 +32,7 @@ export default function EmployeesView() {
         setEmployees(data);
       } catch (err) {
         const errorMessage = (err as Error).message; //as ErrorにすることでError型というのを明示的に示している
-        setError(errorMessage);
+        // setError(errorMessage);
         console.error("Error fetching employees:", errorMessage);
       }
     };
