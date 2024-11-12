@@ -19,8 +19,4 @@
 //   );
 // };
 
-// const TestCalendarGrid = styled(Grid)(({ theme }) => ({
-//   border: "1px solid #000",
-// }));
-
 // export default TestCalendar;
