@@ -69,7 +69,7 @@ const Hour = styled(Box)(() => ({
     left: 50, //線の絶対値を指定
     content: '""', //線を引くための見えないboxの作成(実際には何も表示しないけれど擬似要素のため「スペース確保」のために使用される)
     width: "calc(100vw - 70px)", //見えないboxのwidth
-    borderTop: "1px solid #dcdcdc", //見えないboxにborderを引いている
+    borderTop: "1px solid #dcdcdc", //見えないboxにborderを引いてる
   },
 }));
 
