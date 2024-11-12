@@ -6,7 +6,7 @@ export function countWorkDays(
   let count = 0;
 
   // 開始日から終了日までの日付を生成して繰り返し処理
-  let currentDate = new Date(startDate);
+  const currentDate = new Date(startDate);
   const end = new Date(endDate);
 
   while (currentDate <= end) {
