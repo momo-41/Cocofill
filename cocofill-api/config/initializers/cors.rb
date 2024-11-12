@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "http://localhost:3000" # ポート番号の違うNext.js側のアクセスを許可する
+    origins ENV.fetch("FRONTEND_URL", "http://localhost:3000") # 環境変数からURLを読み込み、デフォルトでローカルを指定
 
     resource "*",
       headers: :any,
