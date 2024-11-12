@@ -13,7 +13,6 @@ import {
   IconButton,
   Stack,
   Box,
-  Typography,
 } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
