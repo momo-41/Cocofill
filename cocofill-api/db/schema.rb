@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_10_094645) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_12_063100) do
   create_table "confirmed_shifts", force: :cascade do |t|
     t.integer "employee_id", null: false
     t.date "date"
@@ -26,6 +26,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_10_094645) do
     t.integer "work_style_week"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "weekday_off_requests", default: 0, null: false
+    t.integer "weekend_off_requests", default: 0, null: false
   end
 
   create_table "shift_submissions", force: :cascade do |t|
