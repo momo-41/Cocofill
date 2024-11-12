@@ -57,8 +57,8 @@ const Day = styled(Box)(() => ({
   borderLeft: "1px solid #dcdcdc",
 }));
 
-const Hour = styled(Box)(({ theme }) => ({
-  marginRight: theme.spacing(3),
+const Hour = styled(Box)(() => ({
+  marginRight: 3,
   textAlign: "right", //時間を右寄せに表示(左側の50px内での右寄せ)
 
   position: "relative",
@@ -73,10 +73,10 @@ const Hour = styled(Box)(({ theme }) => ({
   },
 }));
 
-const HourGrid = styled(Box)(({ theme }) => ({
-  marginTop: theme.spacing(6),
+const HourGrid = styled(Box)(() => ({
+  marginTop: 6,
   display: "grid",
-  gridTemplateRows: `repeat(24, ${theme.spacing(6)})`,
+  gridTemplateRows: `repeat(24, 6)`,
 }));
 
 const DaysGrid = styled(Box)(() => ({
