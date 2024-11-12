@@ -24,7 +24,9 @@ export default function EmployeesView() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/v1/employees");
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/employees`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch employees");
         }

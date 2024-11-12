@@ -61,13 +61,13 @@ export default function CreateShiftView() {
   useEffect(() => {
     // method:"GET"は省略
     // 従業員情報の取得
-    fetch("http://localhost:3001/api/v1/employees")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/employees`)
       .then((response) => response.json())
       .then((data) => setEmployees(data))
       .catch((error) => console.error("Error fetching employees:", error));
 
     // 提出されたシフトの取得
-    fetch("http://localhost:3001/api/v1/shift_submissions")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/shift_submissions`)
       .then((response) => response.json())
       .then((data) => setShiftSubmissions(data))
       .catch((error) =>
