@@ -28,5 +28,5 @@ test:
 # ensure the database is located in a persisted volume.
 production:
   <<: *default
-  database: db/production.sqlite3
+  database: /var/data/production.sqlite3 # db/production.sqlite3だとデプロイや再起動で消える可能性がある
   # database: path/to/persistent/storage/production.sqlite3
