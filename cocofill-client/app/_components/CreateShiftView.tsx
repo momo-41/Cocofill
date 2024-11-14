@@ -63,13 +63,19 @@ export default function CreateShiftView() {
     // 従業員情報の取得
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/employees`)
       .then((response) => response.json())
-      .then((data) => setEmployees(data))
+      .then((data) => {
+        console.log("Fetched employees data:", data); // 取得したデータを確認
+        setEmployees(data);
+      })
       .catch((error) => console.error("Error fetching employees:", error));
 
     // 提出されたシフトの取得
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/shift_submissions`)
       .then((response) => response.json())
-      .then((data) => setShiftSubmissions(data))
+      .then((data) => {
+        console.log("Fetched shift submissions data:", data); // 取得したデータを確認
+        setShiftSubmissions(data);
+      })
       .catch((error) =>
         console.error("Error fetching shift-submissions:", error)
       );
