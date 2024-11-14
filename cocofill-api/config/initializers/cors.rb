@@ -5,9 +5,12 @@
 
 # Read more: https://github.com/cyu/rack-cors
 
+# origins "https://cocofill-two.vercel.app", 'http://localhost:3000' # ポート番号の違うNext.js側のアクセス(3000)を許可する
+
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "https://cocofill-two.vercel.app", 'http://localhost:3000' # ポート番号の違うNext.js側のアクセス(3000)を許可する
+    origins "https://cocofill-two.vercel.app"
+    # ポート番号の違うNext.js側のアクセス(3000)を許可する
 
     resource "*",
       headers: :any,
