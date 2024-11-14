@@ -1,4 +1,4 @@
-export function countWorkDays(
+export function calcWorkWeek(
   employeeName: string,
   startDate: string,
   endDate: string
@@ -9,12 +9,13 @@ export function countWorkDays(
   const currentDate = new Date(startDate);
   const end = new Date(endDate);
 
+  //定義名をわかりやすく設定できるので、for文ではなくwhile文を採用
   while (currentDate <= end) {
     const formattedDate = currentDate.toISOString().split("T")[0]; // "YYYY-MM-DD"形式に変換
     const key = `${employeeName}-${formattedDate}`;
     const value = localStorage.getItem(key);
 
-    // "休"以外の値をカウント
+    // 「休」以外の値をカウント
     if (value && value !== "休") {
       count++;
     }

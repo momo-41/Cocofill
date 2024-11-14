@@ -19,7 +19,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { calcWeek } from "../_const/utils";
 import { Dayjs } from "dayjs";
 import TestShiftButton from "./test/TestShiftButton";
-import { countWorkDays } from "../_const/count-work-days";
+import { calcWorkWeek } from "../_const/count-work-days";
 import CompareWorkStyleWeek from "./CompareWorkStyleWeek";
 
 // 型指定
@@ -212,7 +212,7 @@ export default function CreateShiftView() {
                 // 各従業員の週の出勤回数を計算
                 const startDate = week[0].format("YYYY-MM-DD");
                 const endDate = week[week.length - 1].format("YYYY-MM-DD");
-                const workDaysCount = countWorkDays(
+                const workCountWeek = calcWorkWeek(
                   row.name,
                   startDate,
                   endDate
@@ -261,14 +261,14 @@ export default function CreateShiftView() {
                       >
                         {/* 出勤回数と希望の出勤回数との比較 */}
                         <CompareWorkStyleWeek
-                          workDaysCount={workDaysCount}
+                          workDaysCount={workCountWeek}
                           workStyleWeek={
                             employees.find((e) => e.name === row.name)
                               ?.work_style_week || 0
                           } //列の名前とemployeesのnameが一致したら、work_style_weekの値(希望の働く日数)を取得し、undefinedの場合は0を返す
                         />
                         {/* 出勤回数を表示 */}
-                        勤務日数 {workDaysCount} 日
+                        勤務日数 {workCountWeek} 日
                       </TableCell>
                     </TableRow>
                     {/* 下段：「+」ボタン表示 */}
