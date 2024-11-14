@@ -13,6 +13,8 @@ interface Employee {
   work_style_week: number;
   created_at: string;
   updated_at: string;
+  weekday_off_requests: string;
+  weekend_off_requests: string;
   // 他のプロパティがあれば追加
 }
 
@@ -50,7 +52,13 @@ export default function EmployeesView() {
             <Typography fontSize={12}>ID : {employee.id}</Typography>
             <Typography fontSize={16}>{employee.name}</Typography>
             <Typography variant="body2">
-              {employee.work_style_week}日
+              週{employee.work_style_week}日出勤希望
+            </Typography>
+            <Typography variant="body2">
+              平日：{employee.weekday_off_requests}回休み希望
+            </Typography>
+            <Typography variant="body2">
+              休日：{employee.weekend_off_requests}回休み希望
             </Typography>
           </CardContent>
         </Card>
