@@ -41,6 +41,6 @@ class Api::V1::EmployeesController < ApplicationController
   private # 下記の関数はこのファイルでしか使用できない
 
   def employee_params
-    params.require(:employee).permit(:name, :role, :work_style_week)
+    params.require(:employee).permit(:name, :role, :work_style_week, :weekday_off_requests, :weekend_off_requests)
   end
 end
