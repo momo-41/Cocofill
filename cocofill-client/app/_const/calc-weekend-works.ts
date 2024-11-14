@@ -1,22 +1,21 @@
-export function calcWorkWeek(
+//休日のお休みの回数を計算
+export function calcWeekendWorks(
   employeeName: string,
   startDate: string,
   endDate: string
 ): number {
   let count = 0;
-
-  // 開始日から終了日までの日付を生成して繰り返し処理
   const currentDate = new Date(startDate);
   const end = new Date(endDate);
 
-  //定義名をわかりやすく設定できるので、for文ではなくwhile文を採用
   while (currentDate <= end) {
-    const formattedDate = currentDate.toISOString().split("T")[0]; // "YYYY-MM-DD"形式に変換
+    const dayOfWeek = currentDate.getDay();
+    const formattedDate = currentDate.toISOString().split("T")[0];
     const key = `${employeeName}-${formattedDate}`;
     const value = localStorage.getItem(key);
 
-    // 「休」以外の値をカウント
-    if (value && value !== "休") {
+    // 休日の中で「休」以外の値をカウント
+    if ((dayOfWeek === 0 || dayOfWeek === 6) && value && value !== "休") {
       count++;
     }
 
