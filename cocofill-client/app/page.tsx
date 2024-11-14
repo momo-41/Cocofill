@@ -1,14 +1,7 @@
-import React from "react";
-
-import TestTableMUI from "./_components/test/TestTableMUI";
-import { Box } from "@mui/material";
+import { redirect } from "next/navigation";
 
 const Page = () => {
-  return (
-    <Box px={10}>
-      <TestTableMUI />
-    </Box>
-  );
+  redirect("/create-shift");
 };
 
 export default Page;
