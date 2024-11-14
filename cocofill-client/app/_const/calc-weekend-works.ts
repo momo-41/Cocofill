@@ -1,4 +1,4 @@
-//休日の出勤回数計算
+//休日のお休みの回数を計算
 export function calcWeekendWorks(
   employeeName: string,
   startDate: string,
@@ -15,7 +15,7 @@ export function calcWeekendWorks(
     const value = localStorage.getItem(key);
 
     // 休日の中で「休」以外の値をカウント
-    if ((dayOfWeek === 0 || dayOfWeek === 6) && value && value !== "休") {
+    if ((dayOfWeek === 0 || dayOfWeek === 6) && value && value == "休") {
       count++;
     }
 
