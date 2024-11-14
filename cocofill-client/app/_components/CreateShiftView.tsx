@@ -59,26 +59,40 @@ export default function CreateShiftView() {
   const [rows, setRows] = useState<RowData[]>([]);
 
   useEffect(() => {
-    // method:"GET"は省略
-    // 従業員情報の取得
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/employees`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Fetched employees data:", data); // 取得したデータを確認
+    // 従業員データの取得
+    const fetchEmployees = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/employees`
+        );
+        const data = await response.json();
+        console.log("Fetched employees data:", data);
         setEmployees(data);
-      })
-      .catch((error) => console.error("Error fetching employees:", error));
+      } catch (error) {
+        console.error("Error fetching employees:", error);
+      }
+    };
 
-    // 提出されたシフトの取得
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/shift_submissions`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Fetched shift submissions data:", data); // 取得したデータを確認
+    // シフト提出データの取得
+    const fetchShiftSubmissions = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/shift_submissions`
+        );
+        const data = await response.json();
+        console.log("Fetched shift submissions data:", data);
         setShiftSubmissions(data);
-      })
-      .catch((error) =>
-        console.error("Error fetching shift-submissions:", error)
-      );
+      } catch (error) {
+        console.error("Error fetching shift submissions:", error);
+      }
+    };
+
+    // 両方のデータを非同期で取得
+    const fetchData = async () => {
+      await Promise.all([fetchEmployees(), fetchShiftSubmissions()]);
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {
