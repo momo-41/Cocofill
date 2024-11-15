@@ -25,3 +25,9 @@ export type RowData = {
   name: string;
   shifts: Record<string, string>; // キー(日付)がstring型, 値(希望シフト)がstring型という意味
 };
+
+// test/TestCreateShiftMonthWeek.tsxで使用
+export type CreateShiftViewProps = {
+  month: number;
+  week: number;
+};

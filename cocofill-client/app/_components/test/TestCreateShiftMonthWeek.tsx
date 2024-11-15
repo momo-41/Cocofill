@@ -25,45 +25,15 @@ import { calcWeekendWorks } from "../../_const/calc-weekend-works";
 import { calcMonthWeek, calcWeek } from "../../_const/utils";
 import CompareWorkStyleWeek from "../CompareWorkStyleWeek";
 import TestShiftButton from "./TestShiftButton";
+import {
+  CreateShiftViewProps,
+  Employee,
+  ShiftSubmission,
+  RowData,
+  Column,
+} from "../../_types/create-shift";
 
-// 型指定
-interface Column {
-  id: string;
-  label: string;
-  date: string;
-  align: "center";
-  minWidth: number;
-}
-
-interface Employee {
-  id: number;
-  name: string;
-  role: string;
-  work_style_week: number;
-  weekday_off_requests: number;
-  weekend_off_requests: number;
-}
-
-interface ShiftSubmission {
-  employee_id: number;
-  date: string;
-  shift_request: string;
-}
-
-interface RowData {
-  name: string;
-  shifts: Record<string, string>; // キー(日付)がstring型, 値(希望シフト)がstring型という意味
-}
-
-interface CreateShiftViewProps {
-  month: number;
-  week: number;
-}
-
-export default function TestCreateShiftView({
-  month,
-  week,
-}: CreateShiftViewProps) {
+const TestCreateShiftView = ({ month, week }: CreateShiftViewProps) => {
   const [currentWeek, setCurrentWeek] = useState<Dayjs[]>([]); // 月と週に基づく週データを格納
   // const [week, setWeek] = useState<Dayjs[]>(calcWeek()); //calcWeekは現在の週のデータを返している
   const [weekKey, setWeekKey] = useState(0); // 週が変わる度にbuttonの表示をリセット(+の表示に)するために追加
@@ -385,4 +355,6 @@ export default function TestCreateShiftView({
       </Paper>
     </Box>
   );
-}
+};
+
+export default TestCreateShiftView;

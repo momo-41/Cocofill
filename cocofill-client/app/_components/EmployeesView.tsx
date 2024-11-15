@@ -7,7 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Employee } from "../_types/employee";
 
-export default function EmployeesView() {
+const EmployeesView = () => {
   //リファクタ必須
   const [employees, setEmployees] = useState<Employee[]>([]);
   // const [error, setError] = useState<string | null>(null); //error使われてない
@@ -54,4 +54,5 @@ export default function EmployeesView() {
       ))}
     </Box>
   );
-}
+};
+export default EmployeesView;

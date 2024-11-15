@@ -30,7 +30,7 @@ import {
   Column,
 } from "../_types/create-shift";
 
-export default function CreateShiftView() {
+const CreateShiftView = () => {
   const [week, setWeek] = useState<Dayjs[]>(calcWeek()); //calcWeekは現在の週のデータを返している
   const [weekKey, setWeekKey] = useState(0); // 週が変わる度にbuttonの表示をリセット(+の表示に)するために追加
   const [employees, setEmployees] = useState<Employee[]>([]); // データベースから取得した従業員情報を入れるところ
@@ -339,4 +339,5 @@ export default function CreateShiftView() {
       </Paper>
     </Box>
   );
-}
+};
+export default CreateShiftView;

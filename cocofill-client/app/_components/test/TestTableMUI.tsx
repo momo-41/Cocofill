@@ -20,18 +20,18 @@ import { Dayjs } from "dayjs";
 import TestShiftButton from "./TestShiftButton";
 
 // 型指定
-interface Column {
+type Column = {
   id: string;
   label: string;
   date: string;
   align: "center";
   minWidth: number;
-}
+};
 
-interface RowData {
+type RowData = {
   name: string;
   shifts: Record<string, string>; // 日付ごとのシフト情報
-}
+};
 
 const rows: RowData[] = [
   {
@@ -156,7 +156,7 @@ const rows: RowData[] = [
   },
 ];
 
-export default function TestTableMUI() {
+const TestTableMUI = () => {
   const [week, setWeek] = useState<Dayjs[]>(calcWeek()); //calcWeekは現在の週のデータを返している
 
   const [weekKey, setWeekKey] = useState(0); // 週が変わる度にbuttonの表示をリセットするために追加
@@ -316,4 +316,6 @@ export default function TestTableMUI() {
       </Paper>
     </>
   );
-}
+};
+
+export default TestTableMUI;

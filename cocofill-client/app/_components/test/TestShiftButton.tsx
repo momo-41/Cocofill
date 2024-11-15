@@ -6,12 +6,12 @@ import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import CircleIcon from "@mui/icons-material/Circle";
 
-interface ShiftButtonProps {
+type ShiftButtonProps = {
   id: string; // 各ボタンの一意なID
   weekKey: number; // 週の識別キー
-}
+};
 
-export default function TestShiftButton({ id, weekKey }: ShiftButtonProps) {
+const TestShiftButton = ({ id, weekKey }: ShiftButtonProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [selectedValue, setSelectedValue] = React.useState("＋");
 
@@ -114,4 +114,6 @@ export default function TestShiftButton({ id, weekKey }: ShiftButtonProps) {
       </Menu>
     </>
   );
-}
+};
+
+export default TestShiftButton;

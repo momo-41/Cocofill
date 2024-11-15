@@ -6,7 +6,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { calcWeek, hour } from "../../_const/utils";
 
-export default function TestCalendarWeek() {
+const TestCalendarWeek = () => {
   const [week, setWeek] = useState(calcWeek()); //calcWeekは現在の週のデータを返している
 
   const moveWeek = (type: string) => {
@@ -51,7 +51,7 @@ export default function TestCalendarWeek() {
       </Wrapper>
     </>
   );
-}
+};
 
 const Day = styled(Box)(() => ({
   borderLeft: "1px solid #dcdcdc",
@@ -94,4 +94,4 @@ const FirstGrid = styled(Box)(() => ({
   gridTemplateColumns: "50px calc(100% - 50px)", //左側を50px, 右側を100%-50pxで区切っている
 }));
 
-//TestCalendarWeek
+export default TestCalendarWeek;
