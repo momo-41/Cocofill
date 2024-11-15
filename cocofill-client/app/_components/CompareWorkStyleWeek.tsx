@@ -17,18 +17,22 @@ const CompareWorkStyleWeek: React.FC<CompareWorkStyleWeekProps> = ({
   workCountWeekday,
   workCountWeekend,
 }) => {
+  const isWeekOver = workCountWeek > workStyleWeek;
+  const isWeekdayOver = 5 - workCountWeekday < weekdayOffRequests;
+  const isWeekendOver = 2 - workCountWeekend < weekendOffRequests;
+
   return (
     <div>
-      {workCountWeek > workStyleWeek ? "※" : "◎"} 週間勤務 {workCountWeek} 日 (
-      {workStyleWeek})
+      {/* 週間勤務 */}
+      {isWeekOver ? "※" : "◎"} 週間勤務 {workCountWeek} 日 ({workStyleWeek})
       <br />
-      {/* 5(平日の数) - 平日働いている日数 = 平日に休む日数 */}
-      {5 - workCountWeekday < weekdayOffRequests ? "※" : "◎"} 平日勤務{" "}
-      {workCountWeekday} 日 ({5 - weekdayOffRequests})
+      {/* 平日勤務 */}
+      {isWeekdayOver ? "※" : "◎"} 平日勤務 {workCountWeekday} 日 (
+      {5 - weekdayOffRequests})
       <br />
-      {/* 2(休日の数) - 休日働いている日数 = 休日に休む日数 */}
-      {2 - workCountWeekend < weekendOffRequests ? "※" : "◎"} 休日勤務{" "}
-      {workCountWeekend} 日 ({2 - weekendOffRequests})
+      {/* 休日勤務 */}
+      {isWeekendOver ? "※" : "◎"} 休日勤務 {workCountWeekend} 日 (
+      {2 - weekendOffRequests})
     </div>
   );
 };
@@ -38,10 +42,9 @@ const CompareWorkStyleWeek: React.FC<CompareWorkStyleWeekProps> = ({
 // ◎ 休日勤務 1 日 (2)
 // ()の中は ※ だった場合にその勤務日数を何日にすれば ◎ なるのかの日数。
 // 上記の場合、週間勤務が ※ で、()の中には5と書いてあるので、週間勤務を5日すれば ◎ になる。
-// ※が表示されている時だけ()を表示させるようにする？
 
 export default CompareWorkStyleWeek;
 
 // 元々 "※" か "◎" を表示するためのコンポーネントだったが、勤務日数の隣に"※"や"◎"などの印を表示したかったため、
 // 出勤日数に関してもpropsで持たせてこのコンポーネントでまとめて表示している。
-// 親コンポーネントと子コンポーネント間での、workCountWeekのpropsの移動に違和感は持っている。
+// workCountWeekが無駄に移動しすぎている気がするので、このコンポーネントを分割するのは適切ではないかもしれない
