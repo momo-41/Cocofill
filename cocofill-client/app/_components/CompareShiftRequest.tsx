@@ -1,3 +1,6 @@
+// 提出されたシフトとボタンで選択してるシフトを比較して、適切にシフトが選択されていない場合は"※"を表示させて、適切な場合は"◎"を表示させようとしたが、
+// デザインの崩れが激しいため検討し直し
+
 // import React from "react";
 
 // interface CompareShiftRequestProps {

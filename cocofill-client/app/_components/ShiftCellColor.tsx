@@ -1,3 +1,5 @@
+// 提出されたシフトとボタンで選択してるシフトを比較して、適切にシフトが選択されていない場合はテーブルのセルの色が変わらなかったため、コメントアウト
+
 // import React from "react";
 // import { TableCell } from "@mui/material";
 
