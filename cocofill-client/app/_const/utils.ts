@@ -17,6 +17,18 @@ export function calcWeek(start?: string): Dayjs[] {
   }
   return week;
 }
+
+// 特定の月と週の開始日のみを返す
+export function calcMonthWeek(month: number, week: number): Dayjs {
+  // 月の初日を取得し、指定された週に進める
+  const startOfMonth = dayjs()
+    .month(month - 1)
+    .startOf("month");
+  const startOfWeek = startOfMonth.add((week - 1) * 7, "day");
+
+  return startOfWeek; // 週の初日だけを返す
+}
+
 //"d"は「日付の操作」の単位
 //"day"は曜日に基づいて日付を操作できる
 
