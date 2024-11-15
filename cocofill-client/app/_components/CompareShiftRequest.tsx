@@ -3,7 +3,7 @@
 
 // import React from "react";
 
-// interface CompareShiftRequestProps {
+// type CompareShiftRequestProps = {
 //   shiftValue: string;
 //   selectedValue: string;
 // }
