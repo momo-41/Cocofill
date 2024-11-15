@@ -13,6 +13,7 @@ import {
   IconButton,
   Stack,
   Box,
+  Typography,
 } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -179,7 +180,12 @@ const CreateShiftView = () => {
 
   return (
     <Box px={9}>
-      <Stack direction="row" py={2}>
+      <Typography fontSize={23} textAlign={"left"} ml={1} mt={1}>
+        {`${week[0].format("YYYY年MM月DD日(ddd)")}〜${week[
+          week.length - 1
+        ].format("MM月DD日(ddd)")}`}
+      </Typography>
+      <Stack direction="row" pb={1.5} pt={0.5}>
         {/* <Button
           onClick={() => {
             setWeek(calcWeek());
