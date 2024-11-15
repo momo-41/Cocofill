@@ -23,35 +23,12 @@ import { calcWeekWorks } from "../_const/calc-week-works";
 import CompareWorkStyleWeek from "./CompareWorkStyleWeek";
 import { calcWeekdayWorks } from "../_const/calc-weekday-works";
 import { calcWeekendWorks } from "../_const/calc-weekend-works";
-
-// 型指定
-interface Column {
-  id: string;
-  label: string;
-  date: string;
-  align: "center";
-  minWidth: number;
-}
-
-interface Employee {
-  id: number;
-  name: string;
-  role: string;
-  work_style_week: number;
-  weekday_off_requests: number;
-  weekend_off_requests: number;
-}
-
-interface ShiftSubmission {
-  employee_id: number;
-  date: string;
-  shift_request: string;
-}
-
-interface RowData {
-  name: string;
-  shifts: Record<string, string>; // キー(日付)がstring型, 値(希望シフト)がstring型という意味
-}
+import {
+  Employee,
+  ShiftSubmission,
+  RowData,
+  Column,
+} from "../_types/create-shift";
 
 export default function CreateShiftView() {
   const [week, setWeek] = useState<Dayjs[]>(calcWeek()); //calcWeekは現在の週のデータを返している
@@ -164,7 +141,7 @@ export default function CreateShiftView() {
     const startDate = week[0].format("YYYY-MM-DD"); // 週の初めの日付
     const endDate = week[week.length - 1].format("YYYY-MM-DD"); // 週の終わりの日付
 
-    // 空のオブジェクトを用意して出勤データを格納
+    // 空のオブジェクトを用意して出勤データをここに格納
     const newWorkCounts: Record<
       string,
       {
@@ -196,7 +173,7 @@ export default function CreateShiftView() {
       };
     });
 
-    // 計算結果を状態に反映
+    // 計算結果を入れる
     setWorkCounts(newWorkCounts);
   };
 

@@ -3,7 +3,7 @@
 // import React from "react";
 // import { TableCell } from "@mui/material";
 
-// type ShiftCellColorProps ={
+// type ShiftCellColorProps = {
 //   shiftValue: string;
 //   selectedValue: string;
 //   children: React.ReactNode;

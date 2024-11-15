@@ -5,18 +5,7 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-
-interface Employee {
-  id: number;
-  name: string;
-  role: string;
-  work_style_week: number;
-  created_at: string;
-  updated_at: string;
-  weekday_off_requests: string;
-  weekend_off_requests: string;
-  // 他のプロパティがあれば追加
-}
+import { Employee } from "../_types/employee";
 
 export default function EmployeesView() {
   //リファクタ必須
